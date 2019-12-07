@@ -153,11 +153,11 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 #---------------
 def TrackTargets(covered_zone, track_range):
   #print 'Track Targets'
-  print 'I am node ', uavnode.nodeid
   uavnode = uavs[mynodeseq]
   uavnode.trackid = -1
   updatewypt = 0
-
+  print 'I am node ', uavnode.nodeid
+  
   commsflag = 0
   if protocol == 'udp':
     commsflag = 1
