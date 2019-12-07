@@ -153,6 +153,7 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 #---------------
 def TrackTargets(covered_zone, track_range):
   #print 'Track Targets'
+  print 'I am node ', uavnode.nodeid
   uavnode = uavs[mynodeseq]
   uavnode.trackid = -1
   updatewypt = 0
@@ -169,7 +170,7 @@ def TrackTargets(covered_zone, track_range):
       if Distance(uavnode, trgtnode) <= track_range:
         # Keep the current tracking; no need to change
         # unless the track goes out of range
-        #print 'Keep the current tracking; no need to change ', trgtnode.nodeid
+        print 'Keep the current tracking; no need to change ', trgtnode.nodeid
         uavnode.trackid = trgtnode.nodeid
         updatewypt = 1
 
@@ -182,12 +183,13 @@ def TrackTargets(covered_zone, track_range):
           for uavnodetmp in uavs:
             if uavnodetmp.trackid == trgtnode.nodeid or \
                (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
-              #print 'Target ', trgtnode.nodeid, ' is being tracked already'
+              print 'Target ', trgtnode.nodeid, ' is being tracked already'
               trackflag = 1
             
         if commsflag == 0 or trackflag == 0: 
           # UAV node should track this target
-          #print 'UAV node should track this target ', trgtnode.nodeid
+          print 'No nodes tracking target ', trgtnode.nodeid
+          print 'UAV node %d should track this target.\n' % uavnode.nodeid
           uavnode.trackid = trgtnode.nodeid
           updatewypt = 1
         
