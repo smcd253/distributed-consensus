@@ -141,6 +141,8 @@ def UpdateTracking(uavnodeid, trgtnodeid):
   for uavnode in uavs:
     if uavnode.nodeid == uavnodeid:
       uavnode.trackid = trgtnodeid
+      print("Update Tracking for UAV ", uavnode.nodeid)
+      print("Tracking Node ", uavnode.trackid)
       
   if protocol == 'udp':
     thrdlock.release()
