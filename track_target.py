@@ -143,7 +143,7 @@ def UpdateTracking(uavnodeid, trgtnodeid):
       uavnode.trackid = trgtnodeid
       print("Update Tracking for UAV ", uavnode.nodeid)
       print("Tracking Node ", uavnode.trackid)
-      
+
   if protocol == 'udp':
     thrdlock.release()
 
@@ -304,7 +304,7 @@ def main():
         trgtnode.x, trgtnode.y = float(xstr), float(ystr)
       except:
         print "Exception: file read error. Ignore..."
-
+    print("in main loop") # debug
     # Read all UAV node positions
     for uavnode in uavs:
       fname = 'n%d.xy' % uavnode.nodeid
