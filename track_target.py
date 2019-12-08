@@ -96,9 +96,10 @@ def RecordTarget(uavnode):
 def AdvertiseUDP(uavnodeid, trgtnodeid):
   addrinfo = socket.getaddrinfo(mcastaddr, None)[0]
   sk = socket.socket(addrinfo[0], socket.SOCK_DGRAM)
-  ttl_bin = struct.pack('@i', ttl)Consider a square block on the floor. It has width, height and depth, all of which you can see. But if you adjust your point of view, walk to the side, the apparent width or depth of the object may change. If you grow taller, its apparent height may change. We all know this intuitively, that is, the apparrent dimensions of an object are not a clear description of its identity, it must have some intrinsic properties other than these. E.g., we know our friend way off walking in the distance has some absolute property of size, which is roughly unchanging, so that her apparent smallness must merely be an illusion.
+  ttl_bin = struct.pack('@i', ttl)
+  sk.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl_bin)
 
-
+  buf = str(uavnodeid) + ' ' + str(trgtnodeid)
   sk.sendto(buf, (addrinfo[4][0], port))
 
 
@@ -291,7 +292,6 @@ def main():
         
   # Start tracking targets
   while 1:
-    print "I am node", uavnodeid
     time.sleep(secinterval)
     
     # Read all target node positions
@@ -306,6 +306,7 @@ def main():
         trgtnode.x, trgtnode.y = float(xstr), float(ystr)
       except:
         print "Exception: file read error. Ignore..."
+
     # Read all UAV node positions
     for uavnode in uavs:
       fname = 'n%d.xy' % uavnode.nodeid
