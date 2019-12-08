@@ -141,8 +141,8 @@ def UpdateTracking(uavnodeid, trgtnodeid):
   for uavnode in uavs:
     if uavnode.nodeid == uavnodeid:
       uavnode.trackid = trgtnodeid
-      # print("Update Tracking for UAV ", uavnode.nodeid)
-      # print("Tracking Node ", uavnode.trackid)
+      print("Update Tracking for UAV ", uavnode.nodeid)
+      print("Tracking Node ", uavnode.trackid)
 
   if protocol == 'udp':
     thrdlock.release()
@@ -162,7 +162,7 @@ def TrackTargets(covered_zone, track_range):
     commsflag = 1
     
   for trgtnode in targets: 
-    print 'I am node ', uavnode.nodeid   
+       
     # If this UAV was tracking this target before and it's still
     # in range then it should keep it.
     # Update waypoint to the new position of the target
