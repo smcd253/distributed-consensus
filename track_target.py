@@ -128,6 +128,10 @@ def ReceiveUDP():
     uavnode = uavs[mynodeseq]
     if uavnode.nodeid != uavnodeid:
       UpdateTracking(uavnodeid, trgtnodeid)
+      #fwd data to other nodes
+      AdvertiseUDP(uavnodeid, trgtnodeid)
+
+  
 
       
 #---------------
@@ -208,8 +212,7 @@ def TrackTargets(covered_zone, track_range):
       uavnodetmp.trackid = 0
           
   # Advertise target being tracked if using comms 
-  if protocol == 'udp':
-    AdvertiseUDP(uavnode.nodeid, uavnode.trackid)
+  AdvertiseUDP(uavnode.nodeid, uavnode.trackid)
     
   # Record the target tracked for displaying proper colors
   # Re-deploy UAV if it's not track anything
