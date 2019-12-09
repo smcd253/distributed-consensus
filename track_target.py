@@ -156,11 +156,24 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 def TrackTargets(covered_zone, track_range):
   #print 'Track Targets'
   uavnode = uavs[mynodeseq]
-  uavnode.trackid = -1
+  # uavnode.trackid = -1
   updatewypt = 0
 
   print "I am node", uavnode.nodeid
-    
+
+  
+  print " I am tracking target: targets[uavnode.trackid]", targets[uavnode.trackid]
+
+  # if old target now out of range, drop target id
+
+  # if this node was tracking a target before, don't look for a new target
+
+  # else, loop through targets to find 1st available
+    # if target within range
+      # if target not already taken
+        # grab targetid
+        # immediately advertise target now taken
+
   for trgtnode in targets: 
        
     # If this UAV was tracking this target before and it's still
