@@ -144,7 +144,7 @@ def UpdateTracking(uavnodeid, trgtnodeid):
     if uavnode.nodeid == uavnodeid:
       uavnode.trackid = trgtnodeid
       #fwd data to other nodes
-      AdvertiseUDP(uavnodeid, trgtnodeid)
+      # AdvertiseUDP(uavnodeid, trgtnodeid)
 
   if protocol == 'udp':
     thrdlock.release()
