@@ -176,7 +176,6 @@ def TrackTargets(covered_zone, track_range):
 
     # If this UAV was not tracking any target and finds one in range
     print "uavnode.oldtrackid =", uavnode.oldtrackid
-        
     if uavnode.oldtrackid == -1 and trgtnode.x <= covered_zone:
       if Distance(uavnode, trgtnode) <= track_range:
         #check if the target is being tracked by another UAV
@@ -192,6 +191,7 @@ def TrackTargets(covered_zone, track_range):
           print 'No nodes tracking target ', trgtnode.nodeid
           print 'UAV node %d should track this target.\n' % uavnode.nodeid
           uavnode.trackid = trgtnode.nodeid
+          uavnode.oldtrackid = trgtnode.trackid
           updatewypt = 1
         
     if updatewypt == 1:
