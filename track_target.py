@@ -162,7 +162,8 @@ def TrackTargets(covered_zone, track_range):
   print "I am node", uavnode.nodeid
 
   
-  print " I am tracking target: targets[uavnode.trackid]", targets[uavnode.trackid]
+  if (uavnode.trackid >= 0):
+    print " I am tracking target: targets[uavnode.trackid]", targets[uavnode.trackid].nodeid
 
   # if old target now out of range, drop target id
 
