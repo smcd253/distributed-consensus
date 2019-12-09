@@ -234,7 +234,7 @@ def TrackTargets(covered_zone, track_range):
     if uavnode.trackid == -1:
       RedeployUAV(uavnode)
   
-  if (uavnode.trackid >= 0 and uavnode.trackid < sizeof(targets)):
+  if (uavnode.trackid >= 0 and uavnode.trackid < len(targets)):
     print "uavnode.trackid =", uavnode.trackid
     print " I am tracking targets[%d]: %d\n", (uavnode.trackid, targets[uavnode.trackid].nodeid)
 
