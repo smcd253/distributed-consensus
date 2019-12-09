@@ -156,10 +156,6 @@ def TrackTargets(covered_zone, track_range):
   updatewypt = 0
 
   print "I am node", uavnode.nodeid
-  
-  commsflag = 0
-  if protocol == 'udp':
-    commsflag = 1
     
   for trgtnode in targets: 
        
@@ -177,16 +173,15 @@ def TrackTargets(covered_zone, track_range):
     # If this UAV was not tracking any target and finds one in range    
     if uavnode.oldtrackid == -1 and trgtnode.x <= covered_zone:
       if Distance(uavnode, trgtnode) <= track_range:
-        # If we're using , check if the target is being tracked by another UAV
-        if commsflag == 1:
-          trackflag = 0
-          for uavnodetmp in uavs:
-            if uavnodetmp.trackid == trgtnode.nodeid or \
-               (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
-              print 'Target ', trgtnode.nodeid, ' is being tracked already'
-              trackflag = 1
+        #check if the target is being tracked by another UAV
+        trackflag = 0
+        for uavnodetmp in uavs:
+          if uavnodetmp.trackid == trgtnode.nodeid or \
+              (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
+            print 'Target ', trgtnode.nodeid, ' is being tracked already'
+            trackflag = 1
             
-        if commsflag == 0 or trackflag == 0: 
+        if trackflag == 0: 
           # UAV node should track this target
           print 'No nodes tracking target ', trgtnode.nodeid
           print 'UAV node %d should track this target.\n' % uavnode.nodeid
@@ -207,11 +202,10 @@ def TrackTargets(covered_zone, track_range):
         print "Exception: position file write error. Ignore..."
 
   # Reset tracking info for other UAVs if we're using comms
-  if commsflag == 1:
-    for uavnodetmp in uavs:
-      if uavnodetmp.nodeid != uavnode.nodeid:
-        uavnodetmp.oldtrackid = uavnodetmp.trackid
-        uavnodetmp.trackid = 0
+  for uavnodetmp in uavs:
+    if uavnodetmp.nodeid != uavnode.nodeid:
+      uavnodetmp.oldtrackid = uavnodetmp.trackid
+      uavnodetmp.trackid = 0
           
   # Advertise target being tracked if using comms 
   if protocol == 'udp':
