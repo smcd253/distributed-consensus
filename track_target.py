@@ -156,14 +156,10 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 def TrackTargets(covered_zone, track_range):
   #print 'Track Targets'
   uavnode = uavs[mynodeseq]
-  # uavnode.trackid = -1
+  uavnode.trackid = -1
   updatewypt = 0
 
   print "I am node", uavnode.nodeid
-
-  
-  if (uavnode.trackid >= 0):
-    print " I am tracking target: targets[uavnode.trackid]", targets[uavnode.trackid].nodeid
 
   # if old target now out of range, drop target id
 
@@ -237,6 +233,10 @@ def TrackTargets(covered_zone, track_range):
     RecordTarget(uavnode)
     if uavnode.trackid == -1:
       RedeployUAV(uavnode)
+  
+  if (uavnode.trackid >= 0 and uavnode.trackid < sizeof(targets)):
+    print "uavnode.trackid =", uavnode.trackid
+    print " I am tracking targets[%d]: %d\n", (uavnode.trackid, targets[uavnode.trackid].nodeid)
 
 #---------------
 # main
