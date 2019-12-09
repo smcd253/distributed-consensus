@@ -128,8 +128,6 @@ def ReceiveUDP():
     uavnode = uavs[mynodeseq]
     if uavnode.nodeid != uavnodeid:
       UpdateTracking(uavnodeid, trgtnodeid)
-      #fwd data to other nodes
-      AdvertiseUDP(uavnodeid, trgtnodeid)
 
   
 
@@ -145,7 +143,9 @@ def UpdateTracking(uavnodeid, trgtnodeid):
   for uavnode in uavs:
     if uavnode.nodeid == uavnodeid:
       uavnode.trackid = trgtnodeid
-
+      #fwd data to other nodes
+      AdvertiseUDP(uavnodeid, trgtnodeid)
+      
   if protocol == 'udp':
     thrdlock.release()
 
