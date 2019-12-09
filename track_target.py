@@ -145,7 +145,7 @@ def UpdateTracking(uavnodeid, trgtnodeid):
       uavnode.trackid = trgtnodeid
       #fwd data to other nodes
       AdvertiseUDP(uavnodeid, trgtnodeid)
-      
+
   if protocol == 'udp':
     thrdlock.release()
 
@@ -174,7 +174,9 @@ def TrackTargets(covered_zone, track_range):
         uavnode.trackid = trgtnode.nodeid
         updatewypt = 1
 
-    # If this UAV was not tracking any target and finds one in range    
+    # If this UAV was not tracking any target and finds one in range
+    print "uavnode.oldtrackid =", uavnode.oldtrackid
+        
     if uavnode.oldtrackid == -1 and trgtnode.x <= covered_zone:
       if Distance(uavnode, trgtnode) <= track_range:
         #check if the target is being tracked by another UAV
