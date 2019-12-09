@@ -225,7 +225,11 @@ def TrackTargets(covered_zone, track_range):
           
   # Advertise target being tracked if using comms 
   AdvertiseUDP(uavnode.nodeid, uavnode.trackid)
-    
+
+  if (uavnode.trackid >= 0 and uavnode.trackid < len(targets)):
+    print "uavnode.trackid =", uavnode.trackid
+    print " I am tracking targets[%d]: %d\n", (uavnode.trackid, targets[uavnode.trackid].nodeid)
+      
   # Record the target tracked for displaying proper colors
   # Re-deploy UAV if it's not track anything
   if uavnode.trackid != uavnode.oldtrackid:
@@ -234,9 +238,6 @@ def TrackTargets(covered_zone, track_range):
     if uavnode.trackid == -1:
       RedeployUAV(uavnode)
   
-  if (uavnode.trackid >= 0 and uavnode.trackid < len(targets)):
-    print "uavnode.trackid =", uavnode.trackid
-    print " I am tracking targets[%d]: %d\n", (uavnode.trackid, targets[uavnode.trackid].nodeid)
 
 #---------------
 # main
