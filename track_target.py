@@ -271,7 +271,7 @@ def main():
   # Populate the uavs list and initialize UAV positions and original waypoints in CORE
   nodecnt = 0
   mynodeseq = -1
-  my_node_id = args.my #our id for sequencing
+  my_node_id = args.uav_id #our id for sequencing
   for uavnodeid in args.uav_nodeids:
     node = CORENode(int(uavnodeid), 0, 0, -1)
     uavs.append(node)
@@ -330,15 +330,17 @@ def main():
 
     print "I am node %d\n" % my_node_id
     print "ACTION: scan other nodes"
+    node_counter = 0
     for othernodes in uavs:
-      print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
-      if(my_node_id > othernodes.nodeid):
+      print "Other node %d, track id = %d\n" % (node_counter, othernodes.trackid)
+      if(my_node_id > node_counter):
         print "I am NOT first"
         iamfirst = 0
-      if(othernodes.nodeid < my_node_id and othernodes.trackid < 0):
+      if(node_counter < my_node_id and othernodes.trackid < 0):
         trackflag = 0
-      elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
+      elif (node_counter < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
+      node_counter += 1
     
     if iamfirst:
       print "I am first"
