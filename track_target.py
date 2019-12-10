@@ -410,7 +410,7 @@ def main():
         trackflag = 0
       elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
-      if(othernodes.trackid == my_node.trackid):
+      if(othernodes.trackid == my_node.trackid and othernodes.nodeid != -1):
         RedeployUAV(othernodes)
         
     
