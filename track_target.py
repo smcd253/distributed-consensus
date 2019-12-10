@@ -228,6 +228,9 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 #     RecordTarget(uavnode)
 #     if uavnode.trackid == -1:
 #       RedeployUAV(uavnode)
+#---------------
+# Update waypoints for targets tracked, or track new targets
+#---------------
 def TrackTargets(covered_zone, track_range):
   #print 'Track Targets'
   uavnode = uavs[mynodeseq]
@@ -256,7 +259,7 @@ def TrackTargets(covered_zone, track_range):
         # If we're using , check if the target is being tracked by another UAV
         if commsflag == 1:
           trackflag = 0
-          for uavnodetmp in uavs:RedeployUAV(othernodes)
+          for uavnodetmp in uavs:
             if uavnodetmp.trackid == trgtnode.nodeid or \
                (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
               #print 'Target ', trgtnode.nodeid, ' is being tracked already'
@@ -298,7 +301,7 @@ def TrackTargets(covered_zone, track_range):
     uavnode.oldtrackid = uavnode.trackid
     RecordTarget(uavnode)
     if uavnode.trackid == -1:
-      RedeployUAV(uavnode)  
+      RedeployUAV(uavnode) 
 
 #---------------
 # main
