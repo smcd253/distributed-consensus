@@ -406,17 +406,17 @@ def main():
     print "ACTION: scan other nodes"
     my_node = uavs[mynodeseq]
     for othernodes in uavs:
-      print "Other node %d, oldtrackid= %d\n" % (othernodes.nodeid, othernodes.oldtrackid)
+      print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
       if(my_node_id > othernodes.nodeid):
         print "I am NOT first"
         iamfirst = 0
-      if(othernodes.nodeid < my_node_id and othernodes.oldtrackid < 0):
+      if(othernodes.nodeid < my_node_id and othernodes.trackid < 0):
         trackflag = 0
-      elif (othernodes.nodeid < my_node_id and othernodes.oldtrackid >= 0):
+      elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
-      print "mynode.oldtrackid =", my_node.oldtrackid
+      print "mynode.trackid =", my_node.trackid
       
-      if(othernodes.oldtrackid <= 0):
+      if(othernodes.trackid <= 0):
         print "not everyone has found a target yet"
         reset = False
         
