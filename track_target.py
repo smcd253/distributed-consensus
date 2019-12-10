@@ -271,6 +271,7 @@ def main():
   # Populate the uavs list and initialize UAV positions and original waypoints in CORE
   nodecnt = 0
   mynodeseq = -1
+  my_node_id = args.uav_id #our id for sequencing
   for uavnodeid in args.uav_nodeids:
     node = CORENode(int(uavnodeid), 0, 0, -1)
     uavs.append(node)
@@ -327,7 +328,7 @@ def main():
       except:
         print "Exception: file read error. Ignore..."
 
-    print "I am node %d\n" % uavnodeid
+    print "I am node %d\n" % mynodeseq
     print "ACTION: scan other nodes"
     for othernodes in uavs:
       print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
