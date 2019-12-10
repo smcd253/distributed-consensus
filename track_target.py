@@ -411,9 +411,9 @@ def main():
       elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
-      # if(othernodes.trackid == my_node.trackid and othernodes.trackid != -1):
-      #   # RedeployUAV(othernodes)
-      #   print("othernodes.trackid == my_node.trackid > -1... actual = ", othernodes.trackid)
+      if(othernodes.trackid == my_node.trackid and othernodes.nodeid != my_node_id and othernodes.trackid != -1):
+        RedeployUAV(othernodes)
+        # print("othernodes.trackid == my_node.trackid > -1... actual = ", othernodes.trackid)
         
     
     if iamfirst:
