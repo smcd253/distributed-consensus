@@ -327,10 +327,12 @@ def main():
       except:
         print "Exception: file read error. Ignore..."
 
-    
+    print "I am node %d\n" % uavnodeid
+    print "ACTION: scan other nodes"
     for othernodes in uavs:
       print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
       if(uavnodeid > othernodes.nodeid):
+        print "I am NOT first"
         iamfirst = 0
       if(othernodes.nodeid < uavnodeid and othernodes.trackid < 0):
         trackflag = 0
@@ -339,7 +341,7 @@ def main():
     
     if iamfirst:
       print "I am first"
-      
+
     if protocol == 'udp':    
       thrdlock.acquire()
         
