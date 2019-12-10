@@ -416,7 +416,7 @@ def main():
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
       
-      if(othernodes.trackid <= 0):
+      if(othernodes.oldtrackid <= 0):
         print "not everyone has found a target yet"
         reset = False
         
