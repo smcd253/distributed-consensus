@@ -296,6 +296,8 @@ def main():
     recvthrd.start()
         
   # Start tracking targets
+  trackflag = 0
+  iamfirst = 1
   while 1:
     time.sleep(secinterval)
     
@@ -327,6 +329,7 @@ def main():
 
     
     for othernodes in uavs:
+      print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
       if(uavnodeid > othernodes.nodeid):
         iamfirst = 0
       if(othernodes.nodeid < uavnodeid and othernodes.trackid < 0):
@@ -338,7 +341,7 @@ def main():
       thrdlock.acquire()
         
     if trackflag or iamfirst:
-      print "Node %d start tracking\n" % uavnodeid
+      print "I am node %d. Start tracking\n" % uavnodeid
       TrackTargets(args.covered_zone, args.track_range)
 
     if protocol == 'udp':
