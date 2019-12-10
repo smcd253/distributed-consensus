@@ -285,11 +285,11 @@ def TrackTargets(covered_zone, track_range):
         print "Exception: position file write error. Ignore..."
 
   # Reset tracking info for other UAVs if we're using comms
-  # if commsflag == 1:
-  #   for uavnodetmp in uavs:
-  #     if uavnodetmp.nodeid != uavnode.nodeid:
-  #       uavnodetmp.oldtrackid = uavnodetmp.trackid
-  #       uavnodetmp.trackid = 0
+  if commsflag == 1:
+    for uavnodetmp in uavs:
+      if uavnodetmp.nodeid != uavnode.nodeid:
+        uavnodetmp.oldtrackid = uavnodetmp.trackid
+        uavnodetmp.trackid = 0
           
   # Advertise target being tracked if using comms 
   if protocol == 'udp':
@@ -416,7 +416,7 @@ def main():
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
       
-      if(othernodes.trackid < 0):
+      if(othernodes.trackid =< 0):
         print "not everyone has found a target yet"
         reset = False
         
