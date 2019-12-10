@@ -163,7 +163,7 @@ def TrackTargets(covered_zone, track_range):
   updatewypt = 0
   uavnode.trackid = -1
 
-  print "I am node", uavnode.nodeid
+  # print "I am node", uavnode.nodeid
 
   # if old target now out of range, drop target id
   
@@ -179,7 +179,7 @@ def TrackTargets(covered_zone, track_range):
      
     if uavnode.oldtrackid == trgtnode.nodeid and trgtnode.x <= covered_zone:
       if Distance(uavnode, trgtnode) <= track_range:
-        print 'Keep the current tracking; no need to change ', trgtnode.nodeid
+        # print 'Keep the current tracking; no need to change ', trgtnode.nodeid
         uavnode.trackid = trgtnode.nodeid
         updatewypt = 1
         break
@@ -191,7 +191,7 @@ def TrackTargets(covered_zone, track_range):
         for uavnodetmp in uavs:
           if uavnodetmp.trackid == trgtnode.nodeid or \
               (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
-            print 'Target ', trgtnode.nodeid, ' is being tracked already'
+            # print 'Target ', trgtnode.nodeid, ' is being tracked already'
           else:
             uavnode.trackid = trgtnode.nodeid
             updatewypt = 1
@@ -281,11 +281,7 @@ def main():
       
     nodecnt += 1
 
-  if mynodeseq == -1:
-    print 'Error: my id needs to be in the list of UAV IDs'
-    sys.exit
-    
-  corepath = '/tmp/pycore.*/'
+  while 1:*/'
   nodepath = glob.glob(corepath)[0]
   msecinterval = float(args.interval)
   secinterval = msecinterval/1000
@@ -296,6 +292,7 @@ def main():
     recvthrd.start()
         
   trackflag = 0
+  iamfirst = 1
   while 1:
     time.sleep(secinterval)
     
@@ -325,18 +322,20 @@ def main():
       except:
         print "Exception: file read error. Ignore..."
 
+    
     for othernodes in uavs:
+      if(uavnodeid > othernodes.nodeid):
+        iamfirst = 0
       if(othernodes.nodeid < uavnodeid and othernodes.trackid < 0):
         trackflag = 0
       elif (othernodes.nodeid < uavnodeid and othernodes.trackid >= 0):
         trackflag = 1
-      if othernodes.nodeid >= uavnodeid:
-        break
 
     if protocol == 'udp':    
       thrdlock.acquire()
         
-    if trackflag:
+    if trackflag or iamfirst:
+      print "Node %d start tracking\n" % uavnodeid
       TrackTargets(args.covered_zone, args.track_range)
 
     if protocol == 'udp':
