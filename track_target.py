@@ -256,7 +256,7 @@ def TrackTargets(covered_zone, track_range):
         # If we're using , check if the target is being tracked by another UAV
         if commsflag == 1:
           trackflag = 0
-          for uavnodetmp in uavs:
+          for uavnodetmp in uavs:RedeployUAV(othernodes)
             if uavnodetmp.trackid == trgtnode.nodeid or \
                (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
               #print 'Target ', trgtnode.nodeid, ' is being tracked already'
@@ -412,8 +412,11 @@ def main():
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
       if(othernodes.trackid == my_node.trackid and othernodes.nodeid != my_node_id and othernodes.trackid != -1):
-        RedeployUAV(othernodes)
-        # print("othernodes.trackid == my_node.trackid > -1... actual = ", othernodes.trackid)
+        print("node %d is tracking = ", othernodes.nodeid)
+        my_node.trackid = -1
+        my_node.oldtrackid = -1
+        AdvertiseUDP(my_node.nodeid, my_node.trackid)
+        trackflag = 0
         
     
     if iamfirst:
