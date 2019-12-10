@@ -342,6 +342,7 @@ def main():
   nodecnt = 0
   mynodeseq = -1
   my_node_id = args.uav_id #our id for sequencing
+  reset = 0
   for uavnodeid in args.uav_nodeids:
     node = CORENode(int(uavnodeid), 0, 0, -1)
     uavs.append(node)
@@ -370,6 +371,7 @@ def main():
   trackflag = 0
   iamfirst = 1
   while 1:
+    reset = True
     time.sleep(secinterval)
     
     # Read all target node positions
@@ -411,12 +413,17 @@ def main():
       elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
-      if(othernodes.trackid == my_node.trackid and othernodes.nodeid != my_node_id and othernodes.trackid != -1):
-        print("node %d is tracking = ", othernodes.nodeid)
-        my_node.trackid = -1
-        my_node.oldtrackid = -1
-        # AdvertiseUDP(my_node.nodeid, my_node.trackid)
-        trackflag = 0
+      
+      if(othernodes.trackid < 0):
+        print "not everyone has found a target yet"
+        reset = False
+        
+      # if(othernodes.trackid == my_node.trackid and othernodes.nodeid != my_node_id and othernodes.trackid != -1):
+      #   print("node %d is tracking = ", othernodes.nodeid)
+      #   my_node.trackid = -1
+      #   my_node.oldtrackid = -1
+      #   # AdvertiseUDP(my_node.nodeid, my_node.trackid)
+      #   trackflag = 0
         
     
     if iamfirst:
@@ -431,6 +438,14 @@ def main():
 
     if protocol == 'udp':
       thrdlock.release()
+
+    if reset:
+      print("round complete, reset myself")
+      my_node.trackid = -1
+      my_node.oldtrackid = -1
+      trackflag = 0
+      AdvertiseUDP(my_node.nodeid, my_node.trackid)
+
 
 
 if __name__ == '__main__':
