@@ -296,6 +296,7 @@ def main():
     recvthrd.start()
         
   # Start tracking targets
+  trackflag = False
   while 1:
     time.sleep(secinterval)
     
@@ -327,8 +328,12 @@ def main():
 
     if protocol == 'udp':    
       thrdlock.acquire()
-    
-    TrackTargets(args.covered_zone, args.track_range)
+
+    for othernodes in uavs:
+      if(othernodes.nodeid < mynodeseq and othernodes.trackid < 0:
+        print "waiting for higher priority nodes"
+      else:
+        TrackTargets(args.covered_zone, args.track_range)
 
     if protocol == 'udp':
       thrdlock.release()
