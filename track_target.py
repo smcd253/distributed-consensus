@@ -400,6 +400,7 @@ def main():
 
     print "I am node %d\n" % my_node_id
     print "ACTION: scan other nodes"
+    my_node = uavs[mynodeseq]
     for othernodes in uavs:
       print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
       if(my_node_id > othernodes.nodeid):
@@ -409,6 +410,9 @@ def main():
         trackflag = 0
       elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
+      if(othernodes.trackid == my_node.trackid):
+        RedeployUAV(othernodes)
+        
     
     if iamfirst:
       print "I am first"
