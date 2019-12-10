@@ -328,7 +328,7 @@ def main():
     for othernodes in uavs:
       if(othernodes.nodeid < uavnodeid and othernodes.trackid < 0):
         trackflag = 0
-      else if (othernodes.nodeid < uavnodeid and othernodes.trackid >= 0):
+      elif (othernodes.nodeid < uavnodeid and othernodes.trackid >= 0):
         trackflag = 1
       if othernodes.nodeid >= uavnodeid:
         break
