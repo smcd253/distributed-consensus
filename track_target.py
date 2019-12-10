@@ -415,7 +415,7 @@ def main():
         print("node %d is tracking = ", othernodes.nodeid)
         my_node.trackid = -1
         my_node.oldtrackid = -1
-        AdvertiseUDP(my_node.nodeid, my_node.trackid)
+        # AdvertiseUDP(my_node.nodeid, my_node.trackid)
         trackflag = 0
         
     
