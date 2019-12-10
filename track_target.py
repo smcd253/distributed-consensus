@@ -410,9 +410,9 @@ def main():
       if(my_node_id > othernodes.nodeid):
         print "I am NOT first"
         iamfirst = 0
-      if(othernodes.nodeid < my_node_id and othernodes.trackid < 0):
+      if(othernodes.nodeid < my_node_id and othernodes.trackid <= 0):
         trackflag = 0
-      elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
+      elif (othernodes.nodeid < my_node_id and othernodes.trackid > 0):
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
       
