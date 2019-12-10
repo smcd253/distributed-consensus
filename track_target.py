@@ -234,7 +234,7 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 def TrackTargets(covered_zone, track_range):
   #print 'Track Targets'
   uavnode = uavs[mynodeseq]
-  uavnode.trackid = -1
+  # uavnode.trackid = -1
   updatewypt = 0
 
   commsflag = 0
@@ -300,8 +300,8 @@ def TrackTargets(covered_zone, track_range):
   if uavnode.trackid != uavnode.oldtrackid:
     uavnode.oldtrackid = uavnode.trackid
     RecordTarget(uavnode)
-    if uavnode.trackid == -1:
-      RedeployUAV(uavnode) 
+    # if uavnode.trackid == -1:
+    #   RedeployUAV(uavnode) 
 
 #---------------
 # main
@@ -416,7 +416,7 @@ def main():
         trackflag = 1
       print "mynode.trackid =", my_node.trackid
       
-      if(othernodes.oldtrackid <= 0):
+      if(othernodes.trackid <= 0):
         print "not everyone has found a target yet"
         reset = False
         
@@ -447,6 +447,8 @@ def main():
       my_node.oldtrackid = -1
       trackflag = 0
       AdvertiseUDP(my_node.nodeid, my_node.trackid)
+      RedeployUAV(my_node) 
+
 
 
 
