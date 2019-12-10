@@ -406,7 +406,7 @@ def main():
     print "ACTION: scan other nodes"
     my_node = uavs[mynodeseq]
     for othernodes in uavs:
-      print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
+      print "Other node %d, oldtrackid= %d\n" % (othernodes.nodeid, othernodes.oldtrackid)
       if(my_node_id > othernodes.nodeid):
         print "I am NOT first"
         iamfirst = 0
