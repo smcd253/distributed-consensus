@@ -49,14 +49,14 @@ python $filedir/test_uavs.py -u 1 2 3 4 6 7 8 9 -t 11 12 13 14 16 17 18 19 -l 6 
 # Use trptr to obtain output files to plot
 echo "Plotting graphs for uav nodes..."
 
-trpr input /tmp/control_n1.dat auto X output /tmp/plot_n1.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n2.dat auto X output /tmp/plot_n2.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n3.dat auto X output /tmp/plot_n3.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n4.dat auto X output /tmp/plot_n4.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n6.dat auto X output /tmp/plot_n6.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n7.dat auto X output /tmp/plot_n7.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n8.dat auto X output /tmp/plot_n8.dat 2>/dev/null 2>&1 
-trpr input /tmp/control_n9.dat auto X output /tmp/plot_n9.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n1.dat auto X output /tmp/plot_n1.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n2.dat auto X output /tmp/plot_n2.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n3.dat auto X output /tmp/plot_n3.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n4.dat auto X output /tmp/plot_n4.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n6.dat auto X output /tmp/plot_n6.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n7.dat auto X output /tmp/plot_n7.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n8.dat auto X output /tmp/plot_n8.dat 2>/dev/null 2>&1 
+# trpr input /tmp/control_n9.dat auto X output /tmp/plot_n9.dat 2>/dev/null 2>&1 
 
 # Uncomment if plots of each individual node are needed
 #gnuplot -persist /tmp/plot_n1.dat 2>/dev/null 2>&1 &
