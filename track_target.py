@@ -136,7 +136,7 @@ def ReceiveUDP():
 # Update tracking info based on a received advertisement
 #---------------
 def UpdateTracking(uavnodeid, trgtnodeid):
-  flood = False
+  # flood = False
   # Update corresponding UAV node structure with tracking info
   if protocol == 'udp':
     thrdlock.acquire()
@@ -144,14 +144,14 @@ def UpdateTracking(uavnodeid, trgtnodeid):
   for uavnode in uavs:
     if uavnode.nodeid == uavnodeid:
       uavnode.trackid = trgtnodeid
-      flood = True
+      # flood = True
       #fwd data to other nodes
 
   if protocol == 'udp':
     thrdlock.release()
 
-  if flood:
-    # AdvertiseUDP(uavnodeid, trgtnodeid)
+  # if flood:
+  #   # AdvertiseUDP(uavnodeid, trgtnodeid)
 
   
 #---------------
