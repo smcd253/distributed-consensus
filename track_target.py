@@ -151,7 +151,7 @@ def UpdateTracking(uavnodeid, trgtnodeid):
     thrdlock.release()
 
   if flood:
-    AdvertiseUDP(uavnodeid, trgtnodeid)
+    # AdvertiseUDP(uavnodeid, trgtnodeid)
 
   
 #---------------
@@ -442,7 +442,7 @@ def main():
       thrdlock.release()
 
     if reset:
-      print("round complete, reset myself")
+      print("--------------------------round complete, reset myself---------------------------------------")
       my_node.trackid = -1
       my_node.oldtrackid = -1
       trackflag = 0
