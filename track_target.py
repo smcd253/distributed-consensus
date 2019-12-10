@@ -336,7 +336,10 @@ def main():
         trackflag = 0
       elif (othernodes.nodeid < uavnodeid and othernodes.trackid >= 0):
         trackflag = 1
-
+    
+    if iamfirst:
+      print "I am first"
+      
     if protocol == 'udp':    
       thrdlock.acquire()
         
