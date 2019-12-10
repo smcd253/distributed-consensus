@@ -271,7 +271,7 @@ def main():
   # Populate the uavs list and initialize UAV positions and original waypoints in CORE
   nodecnt = 0
   mynodeseq = -1
-  my_node_id = args.uav_id #our id for sequencing
+  my_node_id = args.my #our id for sequencing
   for uavnodeid in args.uav_nodeids:
     node = CORENode(int(uavnodeid), 0, 0, -1)
     uavs.append(node)
@@ -328,16 +328,16 @@ def main():
       except:
         print "Exception: file read error. Ignore..."
 
-    print "I am node %d\n" % mynodeseq
+    print "I am node %d\n" % my_node_id
     print "ACTION: scan other nodes"
     for othernodes in uavs:
       print "Other node %d, track id = %d\n" % (othernodes.nodeid, othernodes.trackid)
-      if(uavnodeid > othernodes.nodeid):
+      if(my_node_id > othernodes.nodeid):
         print "I am NOT first"
         iamfirst = 0
-      if(othernodes.nodeid < uavnodeid and othernodes.trackid < 0):
+      if(othernodes.nodeid < my_node_id and othernodes.trackid < 0):
         trackflag = 0
-      elif (othernodes.nodeid < uavnodeid and othernodes.trackid >= 0):
+      elif (othernodes.nodeid < my_node_id and othernodes.trackid >= 0):
         trackflag = 1
     
     if iamfirst:
@@ -347,7 +347,7 @@ def main():
       thrdlock.acquire()
         
     if trackflag or iamfirst:
-      print "I am node %d. Start tracking\n" % uavnodeid
+      print "I am node %d. Start tracking\n" % my_node_id
       TrackTargets(args.covered_zone, args.track_range)
 
     if protocol == 'udp':
