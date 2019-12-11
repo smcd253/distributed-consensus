@@ -320,6 +320,8 @@ def main():
     # until node 1 sends out new_round signal
     found_target = False
 
+    new_round = False
+    
     while 1:
         time.sleep(secinterval)
 
