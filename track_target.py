@@ -154,7 +154,6 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 
     if protocol == 'udp':
         thrdlock.release()
-    print("UPDATING TRACKING for uav %d. Target is %d" %(uavnodeid, trgtnodeid))
 
 
 #Epidemic Flooding
