@@ -26,7 +26,7 @@ nodepath = ''
 
 thrdlock = threading.Lock()
 
-global new_round
+new_round = False
 
 # ---------------
 # Define a CORE node
@@ -109,6 +109,7 @@ def AdvertiseUDP(uavnodeid, trgtnodeid, new_round_flag):
 # Receive and parse UDP advertisments
 # ---------------
 def ReceiveUDP():
+    global new_round
     addrinfo = socket.getaddrinfo(mcastaddr, None)[0]
     sk = socket.socket(addrinfo[0], socket.SOCK_DGRAM)
     sk.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -322,7 +323,7 @@ def main():
     # until node 1 sends out new_round signal
     found_target = False
 
-    # initialize new_round to false
+    # # initialize new_round to false
     new_round = False
 
     while 1:
@@ -432,7 +433,7 @@ def main():
           found_target = False 
           print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
           round_count += 1
-          
+
         else:
           if(my_node.trackid > 0):
             found_target = True
