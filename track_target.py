@@ -438,7 +438,7 @@ def main():
         my_turn = 1
 
         # DEBUG: print new loop count
-        print("\n ----- Loop Count %d\n ---" %counter)
+        print("\n ----- Loop Count %d -----\n" %counter)
 
         # create self node object
         my_node = uavs[mynodeseq]
@@ -446,7 +446,6 @@ def main():
         #DEBUG: print self node id and target we are tracking
         print("I am node %d\n" % my_node.nodeid)
         print("\tthis node is tracking mynode.trackid = %d" % my_node.trackid)
-        print("\nACTION: SCANNING OTHER NODES\n")
         
         # create flag for node 1 to trigger new_round
         if iamfirst:
@@ -504,6 +503,7 @@ def main():
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
+            my_turn = False
             print("------- None Node 1 Redeploy!!!")
             
           found_target = False 
@@ -514,7 +514,6 @@ def main():
           if(my_node.trackid > 0):
             found_target = True
           if iamfirst:
-            AdvertiseUDP(my_node.nodeid, my_node.trackid, 0)
             for othernode in uavs:
               print("\tothernode(%d).trackid = %d" % (othernode.nodeid, othernode.trackid))
               if (othernode.trackid <= 0):
@@ -523,6 +522,8 @@ def main():
             
             if(new_round_trigger):
               new_round = True
+            else:
+              AdvertiseUDP(my_node.nodeid, my_node.trackid, 0)
           else:
             AdvertiseUDP(my_node.nodeid, my_node.trackid, -1)
             for othernode in uavs:
