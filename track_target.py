@@ -1,21 +1,3 @@
-
-
-Skip to content
-Using University of Southern California Mail with screen readers
-
-1 of 22,983
-ee597 track_targets
-Inbox
-x
-
-Bill Wang
-Attachments
-4:44 PM (0 minutes ago)
-to me
-
-
-Attachments area
-
 #!/usr/bin/python
 
 # Set target (waypoint) positions for UAVs
