@@ -131,6 +131,7 @@ def ReceiveUDP():
         uavnode = uavs[mynodeseq]
         if uavnode.nodeid != uavnodeid:
             UpdateTracking(uavnodeid, trgtnodeid)
+            AdvertiseUDP(uavnodeid, trgtnodeid, new_round_flag)
 
         if mynodeseq != 0:
           if new_round_flag == 1:
@@ -299,16 +300,13 @@ def TrackTargets(covered_zone, track_range):
     # Record the target tracked for displaying proper colors
     # Re-deploy UAV if it's not track anything
 
- #if UAV tracking is different from before (oldtrackid), updated oldtrackid
- #Update target in File n#_track.txt
-    if uavnode.trackid != uavnode.oldtrackid:
-        uavnode.oldtrackid = uavnode.trackid
-        # RecordTarget(uavnode)
-
-
-#Redeploying UAV if not tracking
-        # if uavnode.trackid == -1:
-        #   RedeployUAV(uavnode)
+ # Record the target tracked for displaying proper colors
+  # Re-deploy UAV if it's not track anything
+  if uavnode.trackid != uavnode.oldtrackid:
+    uavnode.oldtrackid = uavnode.trackid
+    RecordTarget(uavnode)
+    if uavnode.trackid == -1:
+      RedeployUAV(uavnode)
 
 # ---------------
 # main
