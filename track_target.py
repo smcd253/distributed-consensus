@@ -103,7 +103,7 @@ def AdvertiseUDP(uavnodeid, trgtnodeid, new_round_flag):
 
     buf = str(uavnodeid) + ' ' + str(trgtnodeid) + ' ' + str(new_round_flag)
     sk.sendto(buf, (addrinfo[4][0], port))
-    print("ADVERTISING uav %d target %d reset %d" %(uavnodeid, trgtnodeid, new_round_flag))
+    print("ADVERTISING uav %d target %d new_round %d" %(uavnodeid, trgtnodeid, new_round_flag))
 
 
 # ---------------
@@ -134,6 +134,8 @@ def ReceiveUDP():
 
         if new_round_flag == 1:
             new_round = True
+        else if new_round_flag == 0"
+            new_round = False
 
 # ---------------
 # Update tracking info based on a received advertisement
@@ -321,7 +323,7 @@ def main():
     found_target = False
 
     new_round = False
-    
+
     while 1:
         time.sleep(secinterval)
 
@@ -425,6 +427,7 @@ def main():
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
 
+          found_target = False
           round_count += 1
           print "\n\n\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n\n\n" % round_count 
 
