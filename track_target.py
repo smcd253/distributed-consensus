@@ -134,7 +134,7 @@ def ReceiveUDP():
 
         if new_round_flag == 1:
             new_round = True
-        elif new_round_flag == 0
+        elif new_round_flag == 0:
             new_round = False
 
 # ---------------
@@ -428,7 +428,7 @@ def main():
 
           found_target = False
           round_count += 1
-          print "\n\n\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n\n\n" % round_count 
+          print()"\n\n\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n\n\n" % round_count) 
 
         else:
           if(my_node.trackid > 0):
