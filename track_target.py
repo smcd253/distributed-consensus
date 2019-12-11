@@ -427,11 +427,12 @@ def main():
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
-
-          found_target = False
-          round_count += 1
+            print("------- None Node 1 Redeploy!!!")
+            
+          found_target = False 
           print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
-
+          round_count += 1
+          
         else:
           if(my_node.trackid > 0):
             found_target = True
