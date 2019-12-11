@@ -26,8 +26,7 @@ nodepath = ''
 
 thrdlock = threading.Lock()
 
-# reset variable (wait for node 1 to tell other nodes when to start new round)
-new_round = False
+global new_round
 
 # ---------------
 # Define a CORE node
@@ -323,6 +322,7 @@ def main():
     # until node 1 sends out new_round signal
     found_target = False
 
+    # initialize new_round to false
     new_round = False
 
     while 1:
