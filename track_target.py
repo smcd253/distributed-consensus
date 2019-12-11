@@ -520,7 +520,7 @@ def main():
                   # new_round_trigger = False
             
             # if(new_round_trigger):
-            if(Distance(my_node, targets[0]) > args.track_range)  
+            if(Distance(my_node, targets[0]) > args.track_range):  
               new_round = True
             else:
               AdvertiseUDP(my_node.nodeid, my_node.trackid, 0)
