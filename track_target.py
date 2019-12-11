@@ -172,67 +172,6 @@ def UpdateTracking(uavnodeid, trgtnodeid):
 # ---------------
 # Update waypoints for targets tracked, or track new targets
 # ---------------
-# def TrackTargets(covered_zone, track_range):
-#     # print 'Track Targets'
-#     uavnode = uavs[mynodeseq]
-#     # uavnode.trackid = -1
-#     updatewypt = 0
-
-#     commsflag = 0
-#     if protocol == 'udp':
-#         commsflag = 1
-
-#     for trgtnode in targets:
-#         # If this UAV was tracking this target before and it's still
-#         # in range then it should keep it.
-#         # Update waypoint to the new position of the target
-#         if uavnode.oldtrackid == trgtnode.nodeid and trgtnode.x <= covered_zone:
-#             if Distance(uavnode, trgtnode) <= track_range:
-#                 # Keep the current tracking; no need to change
-#                 # unless the track goes out of range
-#                 # print 'Keep the current tracking; no need to change ', trgtnode.nodeid
-#                 uavnode.trackid = trgtnode.nodeid
-#                 updatewypt = 1
-
-#         # If this UAV was not tracking any target and finds one in range
-#         if uavnode.oldtrackid == -1 and trgtnode.x <= covered_zone:
-#             if Distance(uavnode, trgtnode) <= track_range:
-#                 # If we're using , check if the target is being tracked by another UAV
-#                 if commsflag == 1:
-#                     trackflag = 0
-#                     for uavnodetmp in uavs:
-#                         if uavnodetmp.trackid == trgtnode.nodeid or \
-#                                 (uavnodetmp.trackid == 0 and uavnodetmp.oldtrackid == trgtnode.nodeid):
-#                             # print 'Target ', trgtnode.nodeid, ' is being tracked already'
-#                             trackflag = 1
-
-#                 if commsflag == 0 or trackflag == 0:
-#                     # UAV node should track this target
-#                     # print 'UAV node should track this target ', trgtnode.nodeid
-#                     uavnode.trackid = trgtnode.nodeid
-#                     updatewypt = 1
-
-#         if updatewypt == 1:
-#             # Update waypoint for UAV node
-#             updatewypt = 0
-#             fname = '/n%d_wypt.txt' % uavnode.nodeid
-#             fname = filepath + fname
-#             line = str(int(trgtnode.x)) + " " + str(int(trgtnode.y))
-#             try:
-#                 f = open(fname, 'w')
-#                 f.write(line)
-#                 f.close()
-#             except:
-#                 print("Exception: position file write error. Ignore...")
-
-#     # Reset tracking info for other UAVs if we're using comms
-#     if commsflag == 1:
-#         for uavnodetmp in uavs:
-#             if uavnodetmp.nodeid != uavnode.nodeid:
-#                 uavnodetmp.oldtrackid = uavnodetmp.trackid
-#                 uavnodetmp.trackid = 0
-  
-#     RecordTarget(uavnode)
 def TrackTargets(covered_zone, track_range):
     # print 'Track Targets'
     uavnode = uavs[mynodeseq]
