@@ -306,7 +306,7 @@ def main():
 
     # print
     # "I am node %d and my sequence is %d\n" % (my_node_id, mynodeseq)
-
+    # check pwd thing
 
     corepath = '/tmp/pycore.*/'
     nodepath = glob.glob(corepath)[0]
