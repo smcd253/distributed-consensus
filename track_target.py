@@ -132,11 +132,12 @@ def ReceiveUDP():
         if uavnode.nodeid != uavnodeid:
             UpdateTracking(uavnodeid, trgtnodeid)
 
-        if new_round_flag == 1:
-            new_round = True
-            print(" ----------------------- ReceiveUDP() new_round = True ----------------------")
-        elif new_round_flag == 0:
-            new_round = False
+        if mynodeseq != 0:
+          if new_round_flag == 1:
+              new_round = True
+              print(" ----------------------- ReceiveUDP() new_round = True ----------------------")
+          elif new_round_flag == 0:
+              new_round = False
 
 # ---------------
 # Update tracking info based on a received advertisement
