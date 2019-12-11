@@ -492,7 +492,6 @@ def main():
         ################ BEGIN ALGORITHM IMPLEMENTATION ##################
         if new_round:
           if iamfirst:
-            RecordTarget(my_node)
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
@@ -500,13 +499,13 @@ def main():
             new_round = False
           
           else:
-            RecordTarget(my_node)
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
             my_turn = 0
             print("------- None Node 1 Redeploy!!!")
-            
+          
+          RecordTarget(my_node)
           found_target = False 
           print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
           round_count += 1
@@ -534,7 +533,7 @@ def main():
           # lock thread, Track Targets, unlock thread
           if protocol == 'udp':
               thrdlock.acquire()
-          if (my_turn or iamfirst):
+          if (my_turn or iamfirst) and not found_target:
               print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
               TrackTargets(args.covered_zone, args.track_range)
           if protocol == 'udp':
