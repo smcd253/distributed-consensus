@@ -241,6 +241,7 @@ def main():
     global protocol
     global nodepath
     global mynodeseq
+    global new_round
 
     # Get command line inputs
     parser = argparse.ArgumentParser()
