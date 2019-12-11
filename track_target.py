@@ -134,6 +134,7 @@ def ReceiveUDP():
 
         if new_round_flag == 1:
             new_round = True
+            print(" ----------------------- ReceiveUDP() new_round = True ----------------------")
         elif new_round_flag == 0:
             new_round = False
 
