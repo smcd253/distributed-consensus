@@ -281,8 +281,6 @@ def main():
             mynodeseq = nodecnt
             RedeployUAV(node)  # set waypoint back to original position
             RecordTarget(node)  # write target tracked (trackid) to file
-            print("my node sequence is %d and my_node_id is %d" % (mynodeseq, my_node_id))
-
         nodecnt += 1
 
     if mynodeseq == -1:
