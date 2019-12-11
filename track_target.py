@@ -428,7 +428,7 @@ def main():
 
           found_target = False
           round_count += 1
-          print()"\n\n\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n\n\n" % round_count) 
+          print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
 
         else:
           if(my_node.trackid > 0):
