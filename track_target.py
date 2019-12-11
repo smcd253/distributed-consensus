@@ -303,7 +303,7 @@ def TrackTargets(covered_zone, track_range):
  #Update target in File n#_track.txt
     if uavnode.trackid != uavnode.oldtrackid:
         uavnode.oldtrackid = uavnode.trackid
-        RecordTarget(uavnode)
+        # RecordTarget(uavnode)
 
 
 #Redeploying UAV if not tracking
@@ -495,6 +495,7 @@ def main():
         ################ BEGIN ALGORITHM IMPLEMENTATION ##################
         if new_round:
           if iamfirst:
+            RecordTarget(my_node)
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
@@ -502,6 +503,7 @@ def main():
             new_round = False
           
           else:
+            RecordTarget(my_node)
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
