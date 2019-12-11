@@ -158,17 +158,6 @@ def UpdateTracking(uavnodeid, trgtnodeid):
     if protocol == 'udp':
         thrdlock.release()
 
-
-#Epidemic Flooding
-
-    # if flood:
-    #   # AdvertiseUDP(uavnodeid, trgtnodeid)
-
-
-
-
-
-
 # ---------------
 # Update waypoints for targets tracked, or track new targets
 # ---------------
@@ -390,45 +379,6 @@ def main():
         if iamfirst:
           new_round_trigger = True
 
-        ################ BEGIN ALGORITHM PSEUDOCODE ##################
-        # if new_round
-        # if we are node 1
-        #   reset trackids to -1
-        #   RedeployUAV(self)
-        #   AdvertiseUDP(..., new_round)
-        #   set new_round to false
-        # else
-        #   reset trackids to -1
-            
-        #   RedeployUAV(self)
-        # else
-        #   if we have found a target
-        #     stop tracking for this round
-        #   if we are node 1
-        #     AdvertiseUDP(..., NOT new_round)
-        #     loop through other nodes in network
-        #       if a node has not found a target yet
-        #         new round trigger is false
-        #     
-        #     if new_round_trigger is true
-        #       set new round to true (advertise on next loop) 
-        #     new_round = true (wait until next iteration to send new_round advertisement)
-        #   else
-        #     AdvertiseUDP(..., dummy value (neg 1))
-        #     loop through other nodes in network
-        #       if any nodes before us in priority have not found a target yet
-        #         set track flag to 0
-
-        # if i am node 1 and I have not found a target yet
-        #   TrackTargets
-        # else if nodes before me have already found their targets and I have not found a target yet
-        #   TrackTargets
-
-        # if new_round = True
-        #   found_target = false
-        # 
-        ################ END ALGORITHM PSEUDOCODE ##################
-
         ################ BEGIN ALGORITHM IMPLEMENTATION ##################
         if new_round:
           if iamfirst:
@@ -477,10 +427,6 @@ def main():
           if protocol == 'udp':
               thrdlock.release()
         ################ BEGIN ALGORITHM IMPLEMENTATION ##################
-
-
-
-        
 
         counter += 1
 
