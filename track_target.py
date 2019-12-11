@@ -300,13 +300,13 @@ def TrackTargets(covered_zone, track_range):
     # Record the target tracked for displaying proper colors
     # Re-deploy UAV if it's not track anything
 
- # Record the target tracked for displaying proper colors
-  # Re-deploy UAV if it's not track anything
-  if uavnode.trackid != uavnode.oldtrackid:
-    uavnode.oldtrackid = uavnode.trackid
-    RecordTarget(uavnode)
-    if uavnode.trackid == -1:
-      RedeployUAV(uavnode)
+    # Record the target tracked for displaying proper colors
+    # Re-deploy UAV if it's not track anything
+    if uavnode.trackid != uavnode.oldtrackid:
+      uavnode.oldtrackid = uavnode.trackid
+      RecordTarget(uavnode)
+      if uavnode.trackid == -1:
+        RedeployUAV(uavnode)
 
 # ---------------
 # main
