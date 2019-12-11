@@ -446,6 +446,7 @@ def main():
         #DEBUG: print self node id and target we are tracking
         print("I am node %d\n" % my_node.nodeid)
         print("\tthis node is tracking mynode.trackid = %d" % my_node.trackid)
+        print("\tthis node's old tracking id is mynode.oldtrackid = %d", % my_node.oldtrackid)
         
         # create flag for node 1 to trigger new_round
         if iamfirst:
