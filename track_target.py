@@ -537,7 +537,7 @@ def main():
           # lock thread, Track Targets, unlock thread
           if protocol == 'udp':
               thrdlock.acquire()
-          if (my_turn or iamfirst) and not found_target:
+          if (my_turn or iamfirst):
               print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
               TrackTargets(args.covered_zone, args.track_range)
           if protocol == 'udp':
