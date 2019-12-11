@@ -72,7 +72,7 @@ def RedeployUAV(uavnode):
         sys.stderr.write('{0}'.format(result))
     except:
         print("Exception: copy waypoint from original position file. Ignore...")
-    print("REDEPLOYING uav %d" %uavnode.nodeid)
+    # print("REDEPLOYING uav %d" %uavnode.nodeid)
 
 
 # ---------------
@@ -89,7 +89,7 @@ def RecordTarget(uavnode):
         f.close()
     except:
         print("Exception: track file write error. Ignore...")
-    print("RECORDING TARGET %d for uav %d" %(uavnode.trackid, uavnode.nodeid))
+    # print("RECORDING TARGET %d for uav %d" %(uavnode.trackid, uavnode.nodeid))
 
 
 # ---------------
@@ -103,7 +103,7 @@ def AdvertiseUDP(uavnodeid, trgtnodeid, new_round_flag):
 
     buf = str(uavnodeid) + ' ' + str(trgtnodeid) + ' ' + str(new_round_flag)
     sk.sendto(buf, (addrinfo[4][0], port))
-    print("ADVERTISING uav %d target %d new_round %d" %(uavnodeid, trgtnodeid, new_round_flag))
+    # print("ADVERTISING uav %d target %d new_round %d" %(uavnodeid, trgtnodeid, new_round_flag))
 
 
 # ---------------
@@ -136,7 +136,7 @@ def ReceiveUDP():
         if mynodeseq != 0:
           if new_round_flag == 1:
               new_round = True
-              print(" ----------------------- ReceiveUDP() new_round = True ----------------------")
+              # print(" ----------------------- ReceiveUDP() new_round = True ----------------------")
           elif new_round_flag == 0:
               new_round = False
 
@@ -386,7 +386,7 @@ def main():
     iamfirst=0
     if mynodeseq == 0:
       iamfirst=1
-      print("I am First")
+      # print("I am First")
     
     # variable to keep track of number of loops (to find synonymous logs for debugging)
     counter = 0
@@ -437,15 +437,15 @@ def main():
         my_turn = 1
 
         # DEBUG: print new loop count
-        print("\n ----- Loop Count %d -----\n" %counter)
+        # print("\n ----- Loop Count %d -----\n" %counter)
 
         # create self node object
         my_node = uavs[mynodeseq]
 
         #DEBUG: print self node id and target we are tracking
-        print("I am node %d\n" % my_node.nodeid)
-        print("\tthis node is tracking mynode.trackid = %d" % my_node.trackid)
-        print("\tthis node's old tracking id is mynode.oldtrackid = %d" % my_node.oldtrackid)
+        # print("I am node %d\n" % my_node.nodeid)
+        # print("\tthis node is tracking mynode.trackid = %d" % my_node.trackid)
+        # print("\tthis node's old tracking id is mynode.oldtrackid = %d" % my_node.oldtrackid)
         
         # create flag for node 1 to trigger new_round
         if iamfirst:
@@ -502,11 +502,11 @@ def main():
             my_node.trackid = -1
             my_node.oldtrackid = -1
             my_turn = 0
-            print("------- None Node 1 Redeploy!!!")
+            # print("------- None Node 1 Redeploy!!!")
           
           RedeployUAV(my_node)
           found_target = False 
-          print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
+          # print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
           round_count += 1
 
         else:
@@ -514,9 +514,9 @@ def main():
             found_target = True
           if iamfirst:
             for othernode in uavs:
-              print("\tothernode(%d).trackid = %d" % (othernode.nodeid, othernode.trackid))
+              # print("\tothernode(%d).trackid = %d" % (othernode.nodeid, othernode.trackid))
               if (othernode.trackid <= 0):
-                  print("\n-->othernode(%d) has not found a target yet" % othernode.nodeid)
+                  # print("\n-->othernode(%d) has not found a target yet" % othernode.nodeid)
                   new_round_trigger = False
             
             if(Distance(my_node, targets[0]) > args.track_range and new_round_trigger):  
@@ -528,12 +528,12 @@ def main():
             for othernode in uavs:
               if (othernode.nodeid < my_node.nodeid and othernode.trackid < 0):
                   my_turn = 0
-                  print("\tothernode %d higher priority; waiting to track" %othernode.nodeid)
+                  # print("\tothernode %d higher priority; waiting to track" %othernode.nodeid)
           # lock thread, Track Targets, unlock thread
           if protocol == 'udp':
               thrdlock.acquire()
           if (my_turn or iamfirst) and not found_target:
-              print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
+              # print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
               TrackTargets(args.covered_zone, args.track_range)
           if protocol == 'udp':
               thrdlock.release()
