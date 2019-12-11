@@ -66,6 +66,7 @@ def RedeployUAV(uavnode):
     posfile = filepath + '/n' + str(uavnode.nodeid) + '_wypt.txt'
     cmd = 'cp ' + origposfile + ' ' + posfile
 
+    RecordTarget(uavnode)
     try:
         result = subprocess.check_output([cmd], stderr=subprocess.STDOUT, shell=True)
         sys.stderr.write('{0}'.format(result))
@@ -494,18 +495,16 @@ def main():
           if iamfirst:
             my_node.trackid = -1
             my_node.oldtrackid = -1
-            RedeployUAV(my_node)
             AdvertiseUDP(my_node.nodeid, -1, 1)
             new_round = False
           
           else:
             my_node.trackid = -1
             my_node.oldtrackid = -1
-            RedeployUAV(my_node)
             my_turn = 0
             print("------- None Node 1 Redeploy!!!")
           
-          RecordTarget(my_node)
+          RedeployUAV(my_node)
           found_target = False 
           print("\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n" % round_count) 
           round_count += 1
