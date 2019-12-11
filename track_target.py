@@ -134,7 +134,7 @@ def ReceiveUDP():
 
         if new_round_flag == 1:
             new_round = True
-        else if new_round_flag == 0"
+        elif new_round_flag == 0
             new_round = False
 
 # ---------------
