@@ -26,6 +26,8 @@ nodepath = ''
 
 thrdlock = threading.Lock()
 
+# reset variable (wait for node 1 to tell other nodes when to start new round)
+new_round = False
 
 # ---------------
 # Define a CORE node
@@ -93,15 +95,15 @@ def RecordTarget(uavnode):
 # ---------------
 # Advertise the target being tracked over UDP
 # ---------------
-def AdvertiseUDP(uavnodeid, trgtnodeid, resetint):
+def AdvertiseUDP(uavnodeid, trgtnodeid, new_round_flag):
     addrinfo = socket.getaddrinfo(mcastaddr, None)[0]
     sk = socket.socket(addrinfo[0], socket.SOCK_DGRAM)
     ttl_bin = struct.pack('@i', ttl)
     sk.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl_bin)
 
-    buf = str(uavnodeid) + ' ' + str(trgtnodeid) + ' ' + str(resetint)
+    buf = str(uavnodeid) + ' ' + str(trgtnodeid) + ' ' + str(new_round_flag)
     sk.sendto(buf, (addrinfo[4][0], port))
-    print("ADVERTISING uav %d target %d reset %d" %(uavnodeid, trgtnodeid, resetint))
+    print("ADVERTISING uav %d target %d reset %d" %(uavnodeid, trgtnodeid, new_round_flag))
 
 
 # ---------------
@@ -122,20 +124,16 @@ def ReceiveUDP():
 
     while 1:
         buf, sender = sk.recvfrom(1500)
-        uavidstr, trgtidstr, resetidint = buf.split(" ")
-        uavnodeid, trgtnodeid, reset = int(uavidstr), int(trgtidstr), int(resetidint)
+        uavidstr, trgtidstr, new_round_flagstr = buf.split(" ")
+        uavnodeid, trgtnodeid, new_round_flag = int(uavidstr), int(trgtidstr), int(new_round_flagstr)
 
         # Update tracking info for other UAVs
         uavnode = uavs[mynodeseq]
         if uavnode.nodeid != uavnodeid:
             UpdateTracking(uavnodeid, trgtnodeid)
 
-
-        if reset:
-            uavnode.trackid = -1
-            uavnode.oldtrackid = -1
-            # trackflag = 0
-            RedeployUAV(uavnode)
+        if new_round_flag == 1:
+            new_round = True
 
 # ---------------
 # Update tracking info based on a received advertisement
@@ -229,24 +227,8 @@ def TrackTargets(covered_zone, track_range):
             if uavnodetmp.nodeid != uavnode.nodeid:
                 uavnodetmp.oldtrackid = uavnodetmp.trackid
                 uavnodetmp.trackid = 0
-
-    # Advertise target being tracked if using comms
-    if protocol == 'udp':
-        AdvertiseUDP(uavnode.nodeid, uavnode.trackid, 0)
-
-    # Record the target tracked for displaying proper colors
-    # Re-deploy UAV if it's not track anything
-
- #if UAV tracking is different from before (oldtrackid), updated oldtrackid
- #Update target in File n#_track.txt
-    if uavnode.trackid != uavnode.oldtrackid:
-        uavnode.oldtrackid = uavnode.trackid
-        RecordTarget(uavnode)
-
-
-#Redeploying UAV if not tracking
-        # if uavnode.trackid == -1:
-        #   RedeployUAV(uavnode)
+  
+    RecordTarget(uavnode)
 
 
 # ---------------
@@ -275,23 +257,14 @@ def main():
                         type=int, default='1', help='Update Inteval')
     parser.add_argument('-p', '--protocol', dest='protocol', metavar='comms protocol',
                         type=str, default='none', help='Comms Protocol')
-
-    # Parse command line options
-    args = parser.parse_args()
-
-    protocol = args.protocol
-
-    # Populate the targets list, initialize target locations
-    for trgtnodeid in args.trgt_nodeids:
-        node = CORENode(int(trgtnodeid), 0, 0, 0)
+    # Advertise target being tracked if using comms
+    if protocol == 'udp':
+        AdvertiseUDP(uavnode.nodeid, uavnode.trackid, 0)
         targets.append(node)
 
     # Populate the uavs list and initialize UAV positions and original waypoints in CORE
     nodecnt = 0
     mynodeseq = -1
-
-    # Our ID for sequencing
-    my_node_id = args.uav_id
 
     #Initialize CORE nodes for UAVs to know other UAV positions
     for uavnodeid in args.uav_nodeids:
@@ -327,17 +300,23 @@ def main():
 
     # Start tracking targets
 
+    # first node will be master and commander (all network-wide decisions originate from node 1)
     iamfirst=0
-    if mynodeseq==0:
+    if mynodeseq == 0:
       iamfirst=1
       print("I am First")
+    
+    # variable to keep track of number of loops (to find synonymous logs for debugging)
     counter = 0
-    while 1:
-        trackflag = 1
-        print("\nCOUNTER %d" %counter)
-        # tracking reset signal
-        reset = True
 
+    # count rounds to make sure we are keeping up with testing
+    round_count = 1
+
+    # found target variable to prevent nodes from continuing to search for new targets
+    # until node 1 sends out new_round signal
+    found_target = False
+
+    while 1:
         time.sleep(secinterval)
 
         # Read all target node positions
@@ -367,57 +346,117 @@ def main():
                 print("Exception: file read error. Ignore...")
 
 
+        ################################### BEGIN MODIFICATIONS ####################################
+        # main loop start track flag to only allow nodes to track a target
+        # when it's their turn
+        my_turn = 1
 
-        #determine if we should run TrackingTargets
-        #Logic: If we are first priority (iamfirst), start tracking
-        #If other nodes are higher priority, don't track until they have finished
-        #If higher priority nodes already have targets, start tracking
-        #If all nodes have targets, record results and reset
+        # DEBUG: print new loop count
+        print("\n ----- Loop Count %d\n ---" %counter)
+
+        # create self node object
         my_node = uavs[mynodeseq]
+
+        #DEBUG: print self node id and target we are tracking
+        print("I am node %d\n" % my_node.nodeid)
         print("\tthis node is tracking mynode.trackid = %d" % my_node.trackid)
         print("\nACTION: SCANNING OTHER NODES\n")
-        for othernodes in uavs:
-            print("\tOther node %d, othernode trackid = %d" % (othernodes.nodeid, othernodes.trackid))
-            if (othernodes.nodeid < my_node_id and othernodes.trackid < 0): #othernodes higher priority, but not yet tracking target
-                trackflag = 0
-                print("\tothernode %d higher priority; waiting to track" %othernodes.nodeid)
+        
+        # create flag for node 1 to trigger new_round
+        if iamfirst:
+          new_round_trigger = True
 
-            if (othernodes.trackid <= 0):
-                print("\nNODE %d has not found a target yet" %othernodes.nodeid)
-                reset = False
+        ################ BEGIN ALGORITHM PSEUDOCODE ##################
+        # if new_round
+        # if we are node 1
+        #   reset trackids to -1
+        #   RedeployUAV(self)
+        #   AdvertiseUDP(..., new_round)
+        #   set new_round to false
+        # else
+        #   reset trackids to -1
+            
+        #   RedeployUAV(self)
+        # else
+        #   if we have found a target
+        #     stop tracking for this round
+        #   if we are node 1
+        #     AdvertiseUDP(..., NOT new_round)
+        #     loop through other nodes in network
+        #       if a node has not found a target yet
+        #         new round trigger is false
+        #     
+        #     if new_round_trigger is true
+        #       set new round to true (advertise on next loop) 
+        #     new_round = true (wait until next iteration to send new_round advertisement)
+        #   else
+        #     AdvertiseUDP(..., dummy value (neg 1))
+        #     loop through other nodes in network
+        #       if any nodes before us in priority have not found a target yet
+        #         set track flag to 0
+
+        # if i am node 1 and I have not found a target yet
+        #   TrackTargets
+        # else if nodes before me have already found their targets and I have not found a target yet
+        #   TrackTargets
+
+        # if new_round = True
+        #   found_target = false
+        # 
+        ################ END ALGORITHM PSEUDOCODE ##################
+
+        ################ BEGIN ALGORITHM IMPLEMENTATION ##################
+        if new_round:
+          if iamfirst:
+            my_node.trackid = -1
+            my_node.oldtrackid = -1
+            RedeployUAV(my_node)
+            AdvertiseUDP(my_node.nodeid, -1, 1)
+            new_round = False
+          
+          else:
+            my_node.trackid = -1
+            my_node.oldtrackid = -1
+            RedeployUAV(my_node)
+
+          round_count += 1
+          print "\n\n\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n\n\n" % round_count 
+
+        else:
+          if(my_node.trackid > 0):
+            found_target = True
+          if iamfirst:
+            AdvertiseUDP(my_node.nodeid, my_node.trackid, 0)
+            for othernode in uavs:
+              print("\tothernode(%d).trackid = %d" % (othernode.nodeid, othernode.trackid))
+              if (othernode.trackid <= 0):
+                  print("\n-->othernode(%d) has not found a target yet" % othernode.nodeid)
+                  new_round_trigger = False
+            
+            if(new_round_trigger):
+              new_round = True
+          else:
+            AdvertiseUDP(my_node.nodeid, my_node.trackid, -1)
+            for othernode in uavs:
+              if (othernode.nodeid < my_node.nodeid and othernode.trackid < 0):
+                  my_turn = 0
+                  print("\tothernode %d higher priority; waiting to track" %othernode.nodeid)
+        ################ BEGIN ALGORITHM IMPLEMENTATION ##################
 
 
-        print("\nuav status BEFORE tracking/threadlock\n")
-        for uavsbefore in uavs:
-            print("\tuavnode %d trackid %d oldtrackid %d" % (uavsbefore.nodeid, uavsbefore.trackid, uavsbefore.oldtrackid))
-            print("\treset=%s" %(reset))
-            print("\ttrackflag %s" %(trackflag))
 
         # lock thread, Track Targets, unlock thread
         if protocol == 'udp':
             thrdlock.acquire()
-        if trackflag or iamfirst:
-            print("\nI am node %d. START TRACKING\n" % my_node_id)
+        if (my_turn or iamfirst) and not found_target:
+            print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
             TrackTargets(args.covered_zone, args.track_range)
         if protocol == 'udp':
             thrdlock.release()
 
-        print("\nuav status AFTER tracking/threadlock\n")
-        for uavsafter in uavs:
-            print("\tuavnode %d trackid %d oldtrackid %d" % (uavsafter.nodeid, uavsafter.trackid, uavsafter.oldtrackid))
-            print("\treset=%s" % (reset))
-            print("\ttrackflag %s" % (trackflag))
-
-        # reset nodes at end of run (when all targets are tracked)
-        if reset:
-            print("\n\n\n--------------------------ROUND %d COMPLETE, RESET MYSELF---------------------------------------\n\n\n" %counter)
-            my_node.trackid = -1
-            my_node.oldtrackid = -1
-            trackflag = 0
-            AdvertiseUDP(my_node.nodeid, my_node.trackid, 1)
-            RedeployUAV(my_node)
-
         counter += 1
+
+        ################################### END MODIFICATIONS ####################################
 
 
 if __name__ == '__main__':
