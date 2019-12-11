@@ -503,7 +503,7 @@ def main():
             my_node.trackid = -1
             my_node.oldtrackid = -1
             RedeployUAV(my_node)
-            my_turn = False
+            my_turn = 0
             print("------- None Node 1 Redeploy!!!")
             
           found_target = False 
@@ -530,18 +530,19 @@ def main():
               if (othernode.nodeid < my_node.nodeid and othernode.trackid < 0):
                   my_turn = 0
                   print("\tothernode %d higher priority; waiting to track" %othernode.nodeid)
+          # lock thread, Track Targets, unlock thread
+          if protocol == 'udp':
+              thrdlock.acquire()
+          if (my_turn or iamfirst) and not found_target:
+              print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
+              TrackTargets(args.covered_zone, args.track_range)
+          if protocol == 'udp':
+              thrdlock.release()
         ################ BEGIN ALGORITHM IMPLEMENTATION ##################
 
 
 
-        # lock thread, Track Targets, unlock thread
-        if protocol == 'udp':
-            thrdlock.acquire()
-        if (my_turn or iamfirst) and not found_target:
-            print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
-            TrackTargets(args.covered_zone, args.track_range)
-        if protocol == 'udp':
-            thrdlock.release()
+        
 
         counter += 1
 
