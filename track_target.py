@@ -131,7 +131,6 @@ def ReceiveUDP():
         uavnode = uavs[mynodeseq]
         if uavnode.nodeid != uavnodeid:
             UpdateTracking(uavnodeid, trgtnodeid)
-            AdvertiseUDP(uavnodeid, trgtnodeid, new_round_flag)
 
         if mynodeseq != 0:
           if new_round_flag == 1:
