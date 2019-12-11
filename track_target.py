@@ -135,7 +135,6 @@ def ReceiveUDP():
         if new_round_flag == 1:
             new_round = True
             print(" ----------------------- ReceiveUDP() new_round = True ----------------------")
-            AdvertiseUDP(-1, -1, 1) #flood network
         elif new_round_flag == 0:
             new_round = False
 
@@ -537,7 +536,7 @@ def main():
         # lock thread, Track Targets, unlock thread
         if protocol == 'udp':
             thrdlock.acquire()
-        if (my_turn or iamfirst):
+        if (my_turn or iamfirst) and not found_target:
             print("\nI am node %d. START TRACKING\n" % my_node.nodeid)
             TrackTargets(args.covered_zone, args.track_range)
         if protocol == 'udp':
