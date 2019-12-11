@@ -257,9 +257,15 @@ def main():
                         type=int, default='1', help='Update Inteval')
     parser.add_argument('-p', '--protocol', dest='protocol', metavar='comms protocol',
                         type=str, default='none', help='Comms Protocol')
-    # Advertise target being tracked if using comms
-    if protocol == 'udp':
-        AdvertiseUDP(uavnode.nodeid, uavnode.trackid, 0)
+    
+    # Parse command line options
+    args = parser.parse_args()
+
+    protocol = args.protocol
+
+    # Populate the targets list, initialize target locations
+    for trgtnodeid in args.trgt_nodeids:
+        node = CORENode(int(trgtnodeid), 0, 0, 0)
         targets.append(node)
 
     # Populate the uavs list and initialize UAV positions and original waypoints in CORE
